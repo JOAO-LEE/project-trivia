@@ -1,5 +1,8 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import propTypes from 'prop-types';
+import { addPlayer } from '../redux/actions';
 
 class Login extends React.Component {
   state = {
@@ -27,11 +30,17 @@ class Login extends React.Component {
   }
 
   handleBtn = () => {
+    const { savePlayer } = this.props;
+    const { name, email } = this.state;
+
     const URL = 'https://opentdb.com/api_token.php?command=request';
     fetch(URL)
       .then((Response) => Response.json())
       .then((Data) => localStorage.setItem('token', Data.token));
     this.setState({ isRedirect: true });
+
+    const player = { name, assertions: '0', score: '0', gravatarEmail: email };
+    savePlayer(player);
   }
 
   render() {
@@ -79,4 +88,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  savePlayer: (player) => dispatch(addPlayer(player)),
+});
+
+Login.propTypes = {
+  savePlayer: propTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
