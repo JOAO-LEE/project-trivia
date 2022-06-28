@@ -1,11 +1,12 @@
 import React from 'react';
-import propTypes from 'prop-types' 
+import { Redirect } from 'react-router-dom';
 
 class Login extends React.Component {
   state = {
     name: '',
     email: '',
     isDisable: true,
+    isRedirect: false,
   }
 
   handleChange = ({ target }) => {
@@ -20,20 +21,21 @@ class Login extends React.Component {
 
     if (name.length > 0 && email.length > 0 && formatEmail.test(email)) {
       this.setState({ isDisable: false });
+    } else {
+      this.setState({ isDisable: true });
     }
   }
 
   handleBtn = () => {
     const URL = 'https://opentdb.com/api_token.php?command=request';
     fetch(URL)
-    .then(Response => Response.json())
-    .then(Data => localStorage.setItem('token', Data.token))
-    const { history } = this.props;
-    history.push('/game')
+      .then((Response) => Response.json())
+      .then((Data) => localStorage.setItem('token', Data.token));
+    this.setState({ isRedirect: true });
   }
 
   render() {
-    const { name, email, isDisable } = this.state;
+    const { name, email, isDisable, isRedirect } = this.state;
     return (
       <form>
         <label htmlFor="name">
@@ -68,20 +70,10 @@ class Login extends React.Component {
         >
           Entrar
         </button>
+        { isRedirect && <Redirect to="/game" />}
       </form>
     );
   }
-}
-
-Login.propTypes = {
-  history: propTypes.oneOfType([
-    propTypes.number,
-    propTypes.string,
-    propTypes.func,
-    propTypes.array,
-    propTypes.bool,
-    propTypes.object,
-  ]),
 }
 
 export default Login;

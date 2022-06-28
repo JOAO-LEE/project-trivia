@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 class Game extends React.Component {
-  render(){
-    return(
+  render() {
+    return (
       <h1>Olá Mundo!</h1>
-    )
+    );
   }
 }
 
