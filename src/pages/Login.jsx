@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 class Login extends React.Component {
   state = {
@@ -70,6 +70,9 @@ class Login extends React.Component {
         >
           Entrar
         </button>
+        <Link to="/settings" data-testid="btn-settings">
+          Configurações
+        </Link>
         { isRedirect && <Redirect to="/game" />}
       </form>
     );
