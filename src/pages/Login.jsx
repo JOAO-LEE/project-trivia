@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
   state = {
@@ -57,6 +58,9 @@ class Login extends React.Component {
         >
           Entrar
         </button>
+        <Link to="/settings" data-testid="btn-settings">
+          Configurações
+        </Link>
       </form>
     );
   }
