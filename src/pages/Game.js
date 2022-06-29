@@ -5,7 +5,7 @@ import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router-dom';
 import Questions from '../components/Questions';
 
-const TIME_OUT = 30000;
+const TIME_OUT = 3000;
 
 class Game extends React.Component {
   state = {
