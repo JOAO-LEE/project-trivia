@@ -1,41 +1,48 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { setColor } from '../redux/actions';
 
 class Questions extends React.Component {
-  state = {
-    correctAnswer: '',
-    incorrectAnswer: '',
-  }
+  // state={
+  //   timer: 30,
+  //   timeOver: false,
+  //   id: '',
+  // }
+
+  // componentDidMount() {
+  //   const timerToAnswer = setInterval(this.handleTimer, ONE_SECOND);
+  //   this.setState({
+  //     id: timerToAnswer,
+  //   });
+  // }
+
+  // handleTimer = () => {
+  //   const { timer, id } = this.state;
+  //   if (timer === 0) {
+  //     clearInterval(id);
+  //     this.setState({
+  //       timeOver: true,
+  //     });
+  //   } else {
+  //     this.setState((prevState) => ({
+  //       ...prevState,
+  //       timer: prevState.timer - 1,
+  //       timeOver: false,
+  //     }));
+  //   }
+  // }
 
   colorAnswers = () => {
-    this.setState({
-      correctAnswer: '3px solid rgb(6, 240, 15)',
-      incorrectAnswer: '3px solid red',
-    });
-  }
-
-  shuffle(array) {
-    // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-    let currentIndex = array.length;
-    let randomIndex;
-
-    while (currentIndex !== 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    }
-
-    return array;
+    const { dispatchSetColor } = this.props;
+    dispatchSetColor();
   }
 
   render() {
-    const { trivia, index } = this.props;
-    const { correctAnswer, incorrectAnswer } = this.state;
-    const randomizerTrivia = [
-      ...trivia[index].incorrect_answers, trivia[index].correct_answer];
-    this.shuffle(randomizerTrivia);
+    const {
+      trivia,
+      index,
+      randomizerTrivia, correctAnswer, incorrectAnswer, timeOver, timer } = this.props;
     return (
       <div>
         <h3 data-testid="question-category">{trivia[index].category}</h3>
@@ -48,6 +55,7 @@ class Questions extends React.Component {
                   <button
                     key={ answer }
                     type="button"
+                    disabled={ timeOver }
                     data-testid="correct-answer"
                     style={ { border: correctAnswer } }
                     onClick={ this.colorAnswers }
@@ -59,6 +67,7 @@ class Questions extends React.Component {
                   <button
                     key={ answer }
                     type="button"
+                    disabled={ timeOver }
                     data-testid={
                       `wrong-answer-${trivia[index].incorrect_answers.indexOf(answer)}`
                     }
@@ -70,15 +79,25 @@ class Questions extends React.Component {
                 )
             ))
           }
+          <p>{timer}</p>
         </section>
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  correctAnswer: state.game.correctAnswer,
+  incorrectAnswer: state.game.incorrectAnswer,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchSetColor: () => dispatch(setColor()),
+});
+
 Questions.propTypes = {
   index: propTypes.string,
   trivia: propTypes.array,
 }.isRequired;
 
-export default Questions;
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
