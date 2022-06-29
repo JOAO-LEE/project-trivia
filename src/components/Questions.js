@@ -1,40 +1,32 @@
 import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setColor } from '../redux/actions';
+import { setColor, addScore } from '../redux/actions';
+
+const scoreMin = 10;
+const hardValue = 3;
 
 class Questions extends React.Component {
-  // state={
-  //   timer: 30,
-  //   timeOver: false,
-  //   id: '',
-  // }
-
-  // componentDidMount() {
-  //   const timerToAnswer = setInterval(this.handleTimer, ONE_SECOND);
-  //   this.setState({
-  //     id: timerToAnswer,
-  //   });
-  // }
-
-  // handleTimer = () => {
-  //   const { timer, id } = this.state;
-  //   if (timer === 0) {
-  //     clearInterval(id);
-  //     this.setState({
-  //       timeOver: true,
-  //     });
-  //   } else {
-  //     this.setState((prevState) => ({
-  //       ...prevState,
-  //       timer: prevState.timer - 1,
-  //       timeOver: false,
-  //     }));
-  //   }
-  // }
-
-  colorAnswers = () => {
-    const { dispatchSetColor } = this.props;
+  colorAnswers = ({ target }) => {
+    const { dispatchSetColor, timer, trivia, index, dispatchAddScore } = this.props;
+    let score;
+    if (target.name) {
+      switch (trivia[index].difficulty) {
+      case 'easy':
+        score = scoreMin + (timer * 1);
+        dispatchAddScore(score);
+        break;
+      case 'medium':
+        score = scoreMin + (timer * 2);
+        dispatchAddScore(score);
+        break;
+      case 'hard':
+        score = scoreMin + (timer * hardValue);
+        dispatchAddScore(score);
+        break;
+      default:
+      }
+    }
     dispatchSetColor();
   }
 
@@ -53,6 +45,7 @@ class Questions extends React.Component {
               answer === trivia[index].correct_answer
                 ? (
                   <button
+                    name="correct-answer"
                     key={ answer }
                     type="button"
                     disabled={ timeOver }
@@ -93,6 +86,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchSetColor: () => dispatch(setColor()),
+  dispatchAddScore: (score) => dispatch(addScore(score)),
 });
 
 Questions.propTypes = {
