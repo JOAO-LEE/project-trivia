@@ -75,7 +75,12 @@ class Game extends React.Component {
       index: prevState.index <= maxLength ? prevState.index + 1 : prevState.index,
       timer: 30,
       timeOver: true,
-    }));
+    }), () => {
+      const { trivia, index } = this.state;
+      const randomizerTrivia = this.shuffleTrivia(trivia, index);
+
+      this.setState({ randomizerTrivia });
+    });
   }
 
   shuffleTrivia = (trivia, index) => {
