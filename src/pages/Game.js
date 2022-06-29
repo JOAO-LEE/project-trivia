@@ -18,6 +18,7 @@ class Game extends React.Component {
     timeOver: false,
     id: '',
     randomizerTrivia: [],
+    isRedirect: false,
   }
 
   async componentDidMount() {
@@ -67,12 +68,25 @@ class Game extends React.Component {
     }
   }
 
+  redirectFeedback = () => {
+    const { index } = this.state;
+    const maxLength = 4;
+
+    if (index === maxLength) {
+      this.setState({
+        isRedirect: true,
+      });
+    }
+  }
+
   handleNextBtn = () => {
-    const maxLength = 3;
+    const maxLength = 4;
     const { dispatchNextQuestion } = this.props;
+    this.redirectFeedback();
+
     dispatchNextQuestion();
     this.setState((prevState) => ({
-      index: prevState.index <= maxLength ? prevState.index + 1 : prevState.index,
+      index: prevState.index < maxLength ? prevState.index + 1 : prevState.index,
       timer: 30,
       timeOver: true,
     }), () => {
@@ -109,7 +123,8 @@ class Game extends React.Component {
   render() {
     const { player, nextBtn } = this.props;
     const { img,
-      isTokenValid, trivia, index, timer, timeOver, randomizerTrivia } = this.state;
+      isTokenValid,
+      trivia, index, timer, timeOver, randomizerTrivia, isRedirect } = this.state;
     return (
       <>
         <header>
@@ -145,6 +160,7 @@ class Game extends React.Component {
            )}
         </main>
         {isTokenValid && <Redirect to="/" />}
+        {isRedirect && <Redirect to="/feedback" />}
       </>
     );
   }
