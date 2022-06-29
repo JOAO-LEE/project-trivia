@@ -2,10 +2,22 @@ import React from 'react';
 import propTypes from 'prop-types';
 
 class Questions extends React.Component {
+  state = {
+    correctAnswer: '',
+    incorrectAnswer: '',
+  }
+
+  colorAnswers = () => {
+    this.setState({
+      correctAnswer: '3px solid rgb(6, 240, 15)',
+      incorrectAnswer: '3px solid red',
+    });
+  }
+
   shuffle(array) {
     // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-    let currentIndex = array.length; let
-      randomIndex;
+    let currentIndex = array.length;
+    let randomIndex;
 
     while (currentIndex !== 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
@@ -20,6 +32,7 @@ class Questions extends React.Component {
 
   render() {
     const { trivia, index } = this.props;
+    const { correctAnswer, incorrectAnswer } = this.state;
     const randomizerTrivia = [
       ...trivia[index].incorrect_answers, trivia[index].correct_answer];
     this.shuffle(randomizerTrivia);
@@ -36,6 +49,8 @@ class Questions extends React.Component {
                     key={ answer }
                     type="button"
                     data-testid="correct-answer"
+                    style={ { border: correctAnswer } }
+                    onClick={ this.colorAnswers }
                   >
                     {answer}
                   </button>
@@ -47,6 +62,8 @@ class Questions extends React.Component {
                     data-testid={
                       `wrong-answer-${trivia[index].incorrect_answers.indexOf(answer)}`
                     }
+                    style={ { border: incorrectAnswer } }
+                    onClick={ this.colorAnswers }
                   >
                     {answer}
                   </button>
