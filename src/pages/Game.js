@@ -4,9 +4,9 @@ import propTypes, { string } from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router-dom';
 import Questions from '../components/Questions';
-import { nextQuestion } from '../redux/actions';
+import { nextBtnEnable, nextQuestion } from '../redux/actions';
 
-// const TIME_OUT = 3000;
+const ONE_SECOND = 1000;
 
 class Game extends React.Component {
   state = {
@@ -14,16 +14,45 @@ class Game extends React.Component {
     isTokenValid: false,
     trivia: [],
     index: 0,
+    timer: 30,
+    timeOver: false,
+    id: '',
+    randomizerTrivia: [],
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { player } = this.props;
     const hash = md5(player.gravatarEmail).toString();
 
     fetch(`https://www.gravatar.com/avatar/${hash}`)
       .then((response) => (this.setState({ img: response.url })));
 
-    this.fetchTrivia();
+    await this.fetchTrivia();
+
+    const timerToAnswer = setInterval(this.handleTimer, ONE_SECOND);
+    this.setState({ id: timerToAnswer });
+
+    const { trivia, index } = this.state;
+    const randomizerTrivia = this.shuffleTrivia(trivia, index);
+
+    this.setState({ randomizerTrivia });
+  }
+
+  handleTimer = () => {
+    const { timer } = this.state;
+    const { dispatchNextBtnEnable } = this.props;
+    if (timer <= 0) {
+      dispatchNextBtnEnable();
+      this.setState({
+        timeOver: true,
+      });
+    } else {
+      this.setState((prevState) => ({
+        ...prevState,
+        timer: prevState.timer - 1,
+        timeOver: false,
+      }));
+    }
   }
 
   fetchTrivia = async () => {
@@ -44,6 +73,8 @@ class Game extends React.Component {
     dispatchNextQuestion();
     this.setState((prevState) => ({
       index: prevState.index <= maxLength ? prevState.index + 1 : prevState.index,
+      timer: 30,
+      timeOver: true,
     }));
   }
 
@@ -71,8 +102,9 @@ class Game extends React.Component {
   }
 
   render() {
-    const { player } = this.props;
-    const { img, isTokenValid, trivia, index } = this.state;
+    const { player, nextBtn } = this.props;
+    const { img,
+      isTokenValid, trivia, index, timer, timeOver, randomizerTrivia } = this.state;
     return (
       <>
         <header>
@@ -90,18 +122,22 @@ class Game extends React.Component {
           {trivia.length > 0 && (
             <Questions
               trivia={ trivia }
-              randomizerTrivia={ this.shuffleTrivia(trivia, index) }
+              randomizerTrivia={ randomizerTrivia }
               index={ index }
+              timer={ timer }
+              timeOver={ timeOver }
             />
           )}
-          <button
-            onClick={ this.handleNextBtn }
-            data-testid="btn-next"
-            type="button"
-          >
-            Next
-
-          </button>
+          {!nextBtn
+           && (
+             <button
+               onClick={ this.handleNextBtn }
+               data-testid="btn-next"
+               type="button"
+             >
+               Next
+             </button>
+           )}
         </main>
         {isTokenValid && <Redirect to="/" />}
       </>
@@ -111,15 +147,19 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   player: state.player,
+  nextBtn: state.game.nextBtn,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchNextQuestion: () => dispatch(nextQuestion()),
+  dispatchNextBtnEnable: () => dispatch(nextBtnEnable()),
 });
 
 Game.propTypes = {
-  player: propTypes.objectOf(string).isRequired,
-  dispatchNextQuestion: propTypes.func.isRequired,
-};
+  player: propTypes.objectOf(string),
+  dispatchNextQuestion: propTypes.func,
+  nextBtn: propTypes.bool,
+  dispatchNextBtnEnable: propTypes.func,
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

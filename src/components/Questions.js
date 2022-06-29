@@ -3,37 +3,35 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setColor } from '../redux/actions';
 
-const ONE_SECOND = 1000;
-
 class Questions extends React.Component {
-  state={
-    timer: 30,
-    timeOver: false,
-    id: '',
-  }
+  // state={
+  //   timer: 30,
+  //   timeOver: false,
+  //   id: '',
+  // }
 
-  componentDidMount() {
-    const timerToAnswer = setInterval(this.handleTimer, ONE_SECOND);
-    this.setState({
-      id: timerToAnswer,
-    });
-  }
+  // componentDidMount() {
+  //   const timerToAnswer = setInterval(this.handleTimer, ONE_SECOND);
+  //   this.setState({
+  //     id: timerToAnswer,
+  //   });
+  // }
 
-  handleTimer = () => {
-    const { timer, id } = this.state;
-    if (timer === 0) {
-      clearInterval(id);
-      this.setState({
-        timeOver: true,
-      });
-    } else {
-      this.setState((prevState) => ({
-        ...prevState,
-        timer: prevState.timer - 1,
-        timeOver: false,
-      }));
-    }
-  }
+  // handleTimer = () => {
+  //   const { timer, id } = this.state;
+  //   if (timer === 0) {
+  //     clearInterval(id);
+  //     this.setState({
+  //       timeOver: true,
+  //     });
+  //   } else {
+  //     this.setState((prevState) => ({
+  //       ...prevState,
+  //       timer: prevState.timer - 1,
+  //       timeOver: false,
+  //     }));
+  //   }
+  // }
 
   colorAnswers = () => {
     const { dispatchSetColor } = this.props;
@@ -42,8 +40,9 @@ class Questions extends React.Component {
 
   render() {
     const {
-      trivia, index, randomizerTrivia, correctAnswer, incorrectAnswer } = this.props;
-    const { timeOver } = this.state;
+      trivia,
+      index,
+      randomizerTrivia, correctAnswer, incorrectAnswer, timeOver, timer } = this.props;
     return (
       <div>
         <h3 data-testid="question-category">{trivia[index].category}</h3>
@@ -80,6 +79,7 @@ class Questions extends React.Component {
                 )
             ))
           }
+          <p>{timer}</p>
         </section>
       </div>
     );
@@ -87,8 +87,8 @@ class Questions extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  correctAnswer: state.color.correctAnswer,
-  incorrectAnswer: state.color.incorrectAnswer,
+  correctAnswer: state.game.correctAnswer,
+  incorrectAnswer: state.game.incorrectAnswer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
