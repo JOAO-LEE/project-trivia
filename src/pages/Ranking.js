@@ -8,11 +8,11 @@ class Ranking extends React.Component {
     allPlayersImgs: [],
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const response = localStorage.getItem('allPlayers');
     const allPlayers = JSON.parse(response);
-    await this.setState({ allPlayers: allPlayers.sort((a, b) => b.score - a.score) });
-    this.fetchGravatar();
+    this.setState({ allPlayers: allPlayers.sort((a, b) => b.score - a.score) },
+      this.fetchGravatar);
   }
 
   fetchGravatar = async () => {

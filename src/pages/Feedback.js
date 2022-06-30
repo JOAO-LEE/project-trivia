@@ -14,7 +14,6 @@ class Feedback extends React.Component {
   componentDidMount() {
     const { gravatarEmail } = this.props;
     const hash = md5(gravatarEmail).toString();
-
     fetch(`https://www.gravatar.com/avatar/${hash}`)
       .then((response) => (this.setState({ img: response.url })));
   }

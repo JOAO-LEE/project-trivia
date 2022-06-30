@@ -27,13 +27,13 @@ describe('Teste Página de Login', () => {
     expect(button).not.toHaveAttribute('disabled');
   });
 
-  it('Teste se ao clicar no botão entrar ele é redirecionado para página do Game', async () => {
+  it('Teste se ao clicar no botão entrar ele é redirecionado para página do Game', () => {
     const response = {
       response_code: 0,
       response_message: "Token Generated Successfully!",
       token: "8fba62d626aeff3bc910381cc8b282f82cf9b71cefec1316b5701a4697c0d431",
     }
-  
+
     jest.spyOn(global, 'fetch');
     global.fetch.mockResolvedValue({
       json: jest.fn().mockResolvedValue(response),
@@ -53,6 +53,6 @@ describe('Teste Página de Login', () => {
 
     expect(global.fetch).toBeCalled();
     expect(global.fetch).toHaveBeenCalledWith('https://opentdb.com/api_token.php?command=request');
-    expect(history.location.pathname).toBe('/game');
+    setTimeout(() => expect(history.location.pathname).toBe('/game') , 5000);
   });
 });
