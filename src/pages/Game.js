@@ -16,6 +16,7 @@ class Game extends React.Component {
     index: 0,
     timer: 30,
     timeOver: false,
+    isAnswer: false,
     id: '',
     randomizerTrivia: [],
     isRedirect: false,
@@ -89,6 +90,7 @@ class Game extends React.Component {
       index: prevState.index < maxLength ? prevState.index + 1 : prevState.index,
       timer: 30,
       timeOver: true,
+      isAnswer: false,
     }), () => {
       const { trivia, index } = this.state;
       const randomizerTrivia = this.shuffleTrivia(trivia, index);
@@ -96,6 +98,8 @@ class Game extends React.Component {
       this.setState({ randomizerTrivia });
     });
   }
+
+  answerClick = () => this.setState({ isAnswer: true });
 
   shuffleTrivia = (trivia, index) => {
     const answersTrivia = [
@@ -136,7 +140,9 @@ class Game extends React.Component {
     const { player, nextBtn } = this.props;
     const { img,
       isTokenValid,
-      trivia, index, timer, timeOver, randomizerTrivia, isRedirect } = this.state;
+      trivia,
+      index,
+      timer, timeOver, randomizerTrivia, isRedirect, isAnswer } = this.state;
     return (
       <>
         <header>
@@ -158,6 +164,8 @@ class Game extends React.Component {
               index={ index }
               timer={ timer }
               timeOver={ timeOver }
+              isAnswer={ isAnswer }
+              answerClick={ this.answerClick }
             />
           )}
           {!nextBtn

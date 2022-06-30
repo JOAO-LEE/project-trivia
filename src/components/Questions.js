@@ -8,7 +8,11 @@ const hardValue = 3;
 
 class Questions extends React.Component {
   colorAnswers = ({ target }) => {
-    const { dispatchSetColor, timer, trivia, index, dispatchAddScore } = this.props;
+    const { dispatchSetColor,
+      timer, trivia, index, dispatchAddScore, answerClick } = this.props;
+
+    answerClick();
+
     let score;
     if (target.name) {
       switch (trivia[index].difficulty) {
@@ -34,7 +38,8 @@ class Questions extends React.Component {
     const {
       trivia,
       index,
-      randomizerTrivia, correctAnswer, incorrectAnswer, timeOver, timer } = this.props;
+      randomizerTrivia,
+      correctAnswer, incorrectAnswer, timeOver, timer, isAnswer } = this.props;
     return (
       <div>
         <h3 data-testid="question-category">{trivia[index].category}</h3>
@@ -48,7 +53,7 @@ class Questions extends React.Component {
                     name="correct-answer"
                     key={ answer }
                     type="button"
-                    disabled={ timeOver }
+                    disabled={ timeOver || isAnswer }
                     data-testid="correct-answer"
                     style={ { border: correctAnswer } }
                     onClick={ this.colorAnswers }
@@ -60,7 +65,7 @@ class Questions extends React.Component {
                   <button
                     key={ answer }
                     type="button"
-                    disabled={ timeOver }
+                    disabled={ timeOver || isAnswer }
                     data-testid={
                       `wrong-answer-${trivia[index].incorrect_answers.indexOf(answer)}`
                     }
