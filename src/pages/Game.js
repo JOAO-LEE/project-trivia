@@ -104,6 +104,18 @@ class Game extends React.Component {
     return randomizerTrivia;
   }
 
+  savePlayers = (player) => {
+    const response = localStorage.getItem('allPlayers');
+    const prevPlayers = JSON.parse(response);
+    if (prevPlayers === null) {
+      const allPlayers = [player];
+      localStorage.setItem('allPlayers', JSON.stringify(allPlayers));
+    } else {
+      const allPlayers = [...prevPlayers, player];
+      localStorage.setItem('allPlayers', JSON.stringify(allPlayers));
+    }
+  }
+
   shuffle(array) {
     // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
     let currentIndex = array.length;
@@ -160,7 +172,11 @@ class Game extends React.Component {
            )}
         </main>
         {isTokenValid && <Redirect to="/" />}
-        {isRedirect && <Redirect to="/feedback" />}
+        {isRedirect
+        && (
+          this.savePlayers(player),
+          (<Redirect to="/feedback" />)
+        )}
       </>
     );
   }
