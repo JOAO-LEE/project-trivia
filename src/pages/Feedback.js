@@ -22,14 +22,20 @@ class Feedback extends React.Component {
     const { img } = this.state;
     const { score, name, assertions } = this.props;
     return (
-      <header>
-        {assertions < ASSERTIONS_LENGTH
-          ? <p data-testid="feedback-text">Could be better... </p>
-          : <p data-testid="feedback-text">Well Done!</p> }
-        <img src={ img } alt="profile-user" data-testid="header-profile-picture" />
-        <p data-testid="header-player-name">{name}</p>
-        <p data-testid="header-score">{score}</p>
-      </header>
+      <>
+        <header>
+          {assertions < ASSERTIONS_LENGTH
+            ? <p data-testid="feedback-text">Could be better... </p>
+            : <p data-testid="feedback-text">Well Done!</p> }
+          <img src={ img } alt="profile-user" data-testid="header-profile-picture" />
+          <p data-testid="header-player-name">{name}</p>
+          <p data-testid="header-score">{score}</p>
+        </header>
+        <main>
+          <p data-testid="feedback-total-score">{ score }</p>
+          <p data-testid="feedback-total-question">{ assertions }</p>
+        </main>
+      </>
     );
   }
 }
