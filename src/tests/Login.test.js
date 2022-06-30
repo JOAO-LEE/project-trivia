@@ -1,7 +1,7 @@
 import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
 import App from '../App';
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 describe('Teste Página de Login', () => {
@@ -27,7 +27,7 @@ describe('Teste Página de Login', () => {
     expect(button).not.toHaveAttribute('disabled');
   });
 
-  it('Teste se ao clicar no botão entrar ele é redirecionado para página do Game', () => {
+  it('Teste se ao clicar no botão entrar ele é redirecionado para página do Game', async () => {
     const response = {
       response_code: 0,
       response_message: "Token Generated Successfully!",
@@ -47,12 +47,14 @@ describe('Teste Página de Login', () => {
     expect(button).toHaveAttribute('disabled');
 
     userEvent.type(inputNome, 'João');
-    userEvent.type(inputEmail, 'joaopedrolveira7@gmail.com')
+    userEvent.type(inputEmail, 'joaopedrolveira7@gmail.com');
 
     userEvent.click(button);
 
     expect(global.fetch).toBeCalled();
     expect(global.fetch).toHaveBeenCalledWith('https://opentdb.com/api_token.php?command=request');
-    setTimeout(() => expect(history.location.pathname).toBe('/game') , 5000);
+    
+    await waitForElementToBeRemoved(() => screen.getByRole('textbox', { name: /nome/i }));
+    expect(history.location.pathname).toBe('/game');
   });
 });
