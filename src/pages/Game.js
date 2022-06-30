@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import React from 'react';
 import { connect } from 'react-redux';
 import propTypes, { string } from 'prop-types';
@@ -17,7 +18,6 @@ class Game extends React.Component {
     timer: 30,
     timeOver: false,
     isAnswer: false,
-    id: '',
     randomizerTrivia: [],
     isRedirect: false,
   }
@@ -31,13 +31,16 @@ class Game extends React.Component {
 
     await this.fetchTrivia();
 
-    const timerToAnswer = setInterval(this.handleTimer, ONE_SECOND);
-    this.setState({ id: timerToAnswer });
+    this.idInterval = setInterval(this.handleTimer, ONE_SECOND);
 
     const { trivia, index } = this.state;
     const randomizerTrivia = this.shuffleTrivia(trivia, index);
 
     this.setState({ randomizerTrivia });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.idInterval);
   }
 
   handleTimer = () => {
@@ -63,7 +66,7 @@ class Game extends React.Component {
     const data = await response.json();
     this.setState({ trivia: data.results });
 
-    if (await data.results.length <= 0) {
+    if (await data?.results?.length <= 0) {
       localStorage.removeItem('token');
       this.setState({ isTokenValid: true });
     }
@@ -102,10 +105,12 @@ class Game extends React.Component {
   answerClick = () => this.setState({ isAnswer: true });
 
   shuffleTrivia = (trivia, index) => {
-    const answersTrivia = [
-      ...trivia[index].incorrect_answers, trivia[index].correct_answer];
-    const randomizerTrivia = this.shuffle(answersTrivia);
-    return randomizerTrivia;
+    if (trivia) {
+      const answersTrivia = [
+        ...trivia[index].incorrect_answers, trivia[index].correct_answer];
+      const randomizerTrivia = answersTrivia.sort(() => ((Math.random() > 0.5) ? 1 : -1));
+      return randomizerTrivia;
+    }
   }
 
   savePlayers = (player) => {
@@ -118,22 +123,6 @@ class Game extends React.Component {
       const allPlayers = [...prevPlayers, player];
       localStorage.setItem('allPlayers', JSON.stringify(allPlayers));
     }
-  }
-
-  shuffle(array) {
-    // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-    let currentIndex = array.length;
-    let randomIndex;
-
-    while (currentIndex !== 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    }
-
-    return array;
   }
 
   render() {
@@ -157,7 +146,7 @@ class Game extends React.Component {
           </h3>
         </header>
         <main>
-          {trivia.length > 0 && (
+          {trivia?.length > 0 && (
             <Questions
               trivia={ trivia }
               randomizerTrivia={ randomizerTrivia }

@@ -32,7 +32,7 @@ class Ranking extends React.Component {
     const { allPlayers, allPlayersImgs } = this.state;
     return (
       <>
-        <h1 data-testid="ranking-title">Olá Mundo!</h1>
+        <h1 data-testid="ranking-title">Ranking</h1>
         <Link to="/">
           <button data-testid="btn-go-home" type="button">Home</button>
         </Link>
