@@ -24,11 +24,10 @@ class Questions extends React.Component {
         score = scoreMin + (timer * 2);
         dispatchAddScore(score);
         break;
-      case 'hard':
+      default:
         score = scoreMin + (timer * hardValue);
         dispatchAddScore(score);
         break;
-      default:
       }
     }
     dispatchSetColor();

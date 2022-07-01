@@ -8,6 +8,8 @@ import Questions from '../components/Questions';
 import { nextBtnEnable, nextQuestion } from '../redux/actions';
 
 const ONE_SECOND = 1000;
+const ZERO_FIVE = 0.5;
+const MINUS_ONE = -1;
 
 class Game extends React.Component {
   state = {
@@ -105,10 +107,11 @@ class Game extends React.Component {
   answerClick = () => this.setState({ isAnswer: true });
 
   shuffleTrivia = (trivia, index) => {
-    if (trivia) {
+    if (trivia && trivia[index]?.incorrect_answers) {
       const answersTrivia = [
         ...trivia[index].incorrect_answers, trivia[index].correct_answer];
-      const randomizerTrivia = answersTrivia.sort(() => ((Math.random() > 0.5) ? 1 : -1));
+      const randomizerTrivia = answersTrivia
+        .sort(() => ((Math.random() > ZERO_FIVE) ? 1 : MINUS_ONE));
       return randomizerTrivia;
     }
   }
