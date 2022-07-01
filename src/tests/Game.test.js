@@ -7,6 +7,13 @@ import mockTrivia from './mocks/mockTrivia';
 
 describe('Teste Página de Jogo', () => {
   beforeEach(() => {
+    const response = mockTrivia;
+
+    jest.spyOn(global, 'fetch');
+    global.fetch.mockResolvedValue({
+      json: jest.fn().mockResolvedValue(response),
+    });
+
     Object.defineProperty(window, "localStorage", {
       value: {
         getItem: jest.fn(() => null),
@@ -18,13 +25,6 @@ describe('Teste Página de Jogo', () => {
   });
 
   it('Teste respostas corretas e incorretas na tela do jogo.', async () => {
-    const response = mockTrivia;
-
-    jest.spyOn(global, 'fetch');
-    global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(response),
-    });
-
     const INITIAL_STATE = { player: {
       name : "João Pedro",
       assertions: 0,
@@ -49,12 +49,9 @@ describe('Teste Página de Jogo', () => {
     userEvent.click(screen.getByTestId('correct-answer'));
     expect(screen.getByTestId('correct-answer')).toHaveAttribute('style', "border: 3px solid rgb(6, 240, 15);")
     
-
     expect(screen.getByTestId('header-score')).toHaveTextContent(70);
     expect(screen.getByTestId('question-category')).toHaveTextContent('Vehicles');
 
-    expect(screen.getByTestId('timer')).toBeInTheDocument();
-    expect(screen.getByTestId('timer')).toHaveTextContent(30);
 
     expect(screen.getByTestId('question-text')).toBeInTheDocument();
     expect(screen.getByTestId('question-category')).toBeInTheDocument();
@@ -124,5 +121,32 @@ describe('Teste Página de Jogo', () => {
     userEvent.click(button);
 
     expect(history.location.pathname).toBe('/');
+  });
+
+  it('' , async () => {
+    Object.defineProperty(window, "localStorage", {
+      value: {
+        getItem: jest.fn(() => '[{"name":"robinho","assertions":1,"score":68,"gravatarEmail":"robsonsilva07@gmail.com"},{"name":"aaaa","assertions":2,"score":108,"gravatarEmail":"asdasdasdasd@mmail.ocm"}]'),
+        setItem: jest.fn(() => null),
+        removeItem: jest.fn(() => null),
+      },
+      writable: true
+    });
+
+    const { history } = renderWithRouterAndRedux(<App />);
+    history.push('./game');
+
+    await waitFor(() => expect(screen.getByTestId('correct-answer')).toBeInTheDocument());
+    expect(history.location.pathname).toBe('/game');
+
+    for(let i = 0; i <= 3; i += 1) {
+      userEvent.click(screen.getByTestId('correct-answer'));
+      userEvent.click(screen.getByRole('button', { name: /next/i }));
+      await waitFor(() => expect(screen.getByTestId('correct-answer')).not.toHaveAttribute('disabled'));
+    }
+
+    userEvent.click(screen.getByTestId('correct-answer'));
+    userEvent.click(screen.getByRole('button', { name: /next/i }));
+    expect(window.localStorage.setItem).toHaveBeenCalledWith('allPlayers', "[{\"name\":\"robinho\",\"assertions\":1,\"score\":68,\"gravatarEmail\":\"robsonsilva07@gmail.com\"},{\"name\":\"aaaa\",\"assertions\":2,\"score\":108,\"gravatarEmail\":\"asdasdasdasd@mmail.ocm\"},{\"name\":\"\",\"assertions\":5,\"score\":313,\"gravatarEmail\":\"\"}]");
   });
 });

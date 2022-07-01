@@ -107,7 +107,7 @@ class Game extends React.Component {
   answerClick = () => this.setState({ isAnswer: true });
 
   shuffleTrivia = (trivia, index) => {
-    if (trivia) {
+    if (trivia && trivia[index]?.incorrect_answers) {
       const answersTrivia = [
         ...trivia[index].incorrect_answers, trivia[index].correct_answer];
       const randomizerTrivia = answersTrivia
