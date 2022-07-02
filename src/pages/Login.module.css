@@ -2,7 +2,6 @@
 .loginPage {
   align-items: center;
   background-color: #232ec5;
-  /* color: #232ec5; */
   display: flex;
   flex-direction: column;
   height: 768px;
@@ -54,9 +53,9 @@ p {
   width: 55%;
 }
 
-/* .loginButton:hover {
+.loginButton:hover {
   background-color: #040b64;
-} */
+}
 
 * {
   font-family: monospace;

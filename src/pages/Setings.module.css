@@ -30,9 +30,8 @@
 .configLabel {
   align-items: flex-start;
   display: flex;
-  justify-content: center;
   flex-direction: column;
-
+  justify-content: center;
 }
 
 .h1 {
