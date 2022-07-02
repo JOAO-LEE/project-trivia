@@ -1,0 +1,75 @@
+.questPage {
+  align-items: flex-start;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.question {
+  align-items: center;
+  background-color: #232ec5;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-evenly;
+  padding: 10px;
+  width: 450px;
+}
+
+.questionMain {
+  align-items: center;
+  color: rgb(0, 0, 0);
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  padding: 10px;
+  width: 780px;
+}
+
+.timerBox {
+  align-items: center;
+  background-color: #232ec5;
+  border-radius: 50px;
+  display: flex;
+  font-size: 30px;
+  justify-content: center;
+  color: rgb(255, 255, 255);
+  width: 80px;
+  height: 80px;
+}
+
+.optionSection {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 790px;
+}
+
+.option {
+  align-items:center;
+  background-color: #232ec5;
+  border-radius: 10px;
+  color: rgb(255, 255, 255);
+  display: flex;
+  font-weight: bold;
+  justify-content: flex-start;
+  width: 350px;
+  height: 50px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.option:hover {
+  background-color: rgb(233, 37, 37);
+  color: white;
+  font-weight: bold;
+}
+
+.category {
+  color: black;
+  margin-left: 12px;
+  font-size: 10px;
+}

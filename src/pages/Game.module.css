@@ -1,0 +1,65 @@
+.gamePage {
+  align-items: center;
+  background-color: #232ec5;
+  display: flex;
+  flex-direction: column;
+  height: 768px;
+  justify-content: center;
+}
+
+.header {
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  color: rgb(0, 0, 0);
+  display: flex;
+  /* justify-content: space-evenly; */
+  padding: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 800px;
+}
+
+.profileImg {
+  border-radius: 10px;
+  width: 50px;
+  margin-right: 25px;
+}
+
+.profileName {
+  font-size: 30px;
+  color: rgb(0, 0, 0);
+}
+
+.main {
+  align-items:flex-start;
+  background-image: url('../imgs/silvio.png');
+  background-size: cover;
+  background-color: white;
+  border-radius: 10px;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  height: 555px;
+  justify-content:flex-start;
+  padding: 15px;
+  margin-top: 15px;
+  width: 800px;
+}
+
+.nextButton {
+  align-items: flex-end;
+  background-color: #060b55;
+  border-radius: 10px;
+  color: white;
+  justify-content:flex-end;
+  padding: 15px;
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 100px;
+}
+
+.nextButton:hover {
+  background-color: #232ec5;
+  color: white;
+}

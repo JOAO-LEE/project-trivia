@@ -6,6 +6,7 @@ import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router-dom';
 import Questions from '../components/Questions';
 import { nextBtnEnable, nextQuestion } from '../redux/actions';
+import styles from './Game.module.css';
 
 const ONE_SECOND = 1000;
 const ZERO_FIVE = 0.5;
@@ -136,19 +137,20 @@ class Game extends React.Component {
       index,
       timer, timeOver, randomizerTrivia, isRedirect, isAnswer } = this.state;
     return (
-      <>
-        <header>
+      <div className={ styles.gamePage }>
+        <header className={ styles.header }>
           <img
             src={ img || 'https://www.gravatar.com/avatar/c19ad9dbaf91c5533605fbf985177ccc' }
             alt="user-profile"
             data-testid="header-profile-picture"
+            className={ styles.profileImg }
           />
-          <h3 data-testid="header-player-name">
+          <h3 data-testid="header-player-name" className={ styles.profileName }>
             {player.name}
-            <strong data-testid="header-score">{` ${player.score}`}</strong>
+            <strong data-testid="header-score">{` - Pontuação: ${player.score}`}</strong>
           </h3>
         </header>
-        <main>
+        <main className={ styles.main }>
           {trivia?.length > 0 && (
             <Questions
               trivia={ trivia }
@@ -166,6 +168,7 @@ class Game extends React.Component {
                onClick={ this.handleNextBtn }
                data-testid="btn-next"
                type="button"
+               className={ styles.nextButton }
              >
                Next
              </button>
@@ -177,7 +180,7 @@ class Game extends React.Component {
           this.savePlayers(player),
           (<Redirect to="/feedback" />)
         )}
-      </>
+      </div>
     );
   }
 }
