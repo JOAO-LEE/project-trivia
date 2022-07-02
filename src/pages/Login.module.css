@@ -1,0 +1,74 @@
+/* // não pode usar hifen, use camelCase ou underline */
+.loginPage {
+  align-items: center;
+  background-color: #232ec5;
+  /* color: #232ec5; */
+  display: flex;
+  flex-direction: column;
+  height: 768px;
+  justify-content: center;
+}
+
+.inputBox {
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  justify-content: center;
+  width: 800px;
+}
+
+label {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+}
+
+p {
+  font-weight: 700;
+}
+
+.input {
+  align-items: flex-end;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 2px 2px rgb(190, 190, 190);
+  margin: 5px;
+  padding: 8px;
+  width: 300px;
+}
+
+.loginButton {
+  background-color: #232ec5;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  margin: 10px;
+  padding: 10px;
+  width: 55%;
+}
+
+/* .loginButton:hover {
+  background-color: #040b64;
+} */
+
+* {
+  font-family: monospace;
+}
+
+.img {
+  margin-bottom: 40px;
+  width: 400px;
+}
+
+.config {
+  margin-bottom: 10px;
+  margin-left: 650px;
+  width: 80px;
+}
