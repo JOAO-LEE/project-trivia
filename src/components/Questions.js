@@ -2,6 +2,7 @@ import React from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setColor, addScore } from '../redux/actions';
+import styles from './Questions.module.css';
 
 const scoreMin = 10;
 const hardValue = 3;
@@ -40,10 +41,19 @@ class Questions extends React.Component {
       randomizerTrivia,
       correctAnswer, incorrectAnswer, timeOver, timer, isAnswer } = this.props;
     return (
-      <div>
-        <h3 data-testid="question-category">{trivia[index].category}</h3>
-        <h2 data-testid="question-text">{trivia[index].question}</h2>
-        <section data-testid="answer-options">
+      <div className={ styles.questPage }>
+        <div className={ styles.questionMain }>
+          <div className={ styles.question }>
+            <h2 data-testid="question-text">{trivia[index].question}</h2>
+          </div>
+          <div className={ styles.timerBox }>
+            <p className={ styles.timer }>{timer}</p>
+          </div>
+        </div>
+        <div className={ styles.category }>
+          <h3 data-testid="question-category">{trivia[index].category}</h3>
+        </div>
+        <section data-testid="answer-options" className={ styles.optionSection }>
           {
             randomizerTrivia.map((answer) => (
               answer === trivia[index].correct_answer
@@ -56,6 +66,7 @@ class Questions extends React.Component {
                     data-testid="correct-answer"
                     style={ { border: correctAnswer } }
                     onClick={ this.colorAnswers }
+                    className={ styles.option }
                   >
                     {answer}
                   </button>
@@ -70,13 +81,13 @@ class Questions extends React.Component {
                     }
                     style={ { border: incorrectAnswer } }
                     onClick={ this.colorAnswers }
+                    className={ styles.option }
                   >
                     {answer}
                   </button>
                 )
             ))
           }
-          <p>{timer}</p>
         </section>
       </div>
     );

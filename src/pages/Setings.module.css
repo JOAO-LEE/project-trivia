@@ -1,0 +1,60 @@
+.configPage {
+  align-items: center;
+  background-color: #232ec5;
+  display: flex;
+  flex-direction: column;
+  height: 768px;
+  justify-content: center;
+}
+
+.configBox {
+  align-items: flex-start;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  justify-content: center;
+  width: 800px;
+}
+
+.configImg {
+  margin-left: 85px;
+  width: 30px;
+}
+
+.configTitle {
+  align-items: center;
+  display: flex;
+}
+
+.configLabel {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 50px;
+}
+
+.h1 {
+  margin: 25px;
+}
+
+.select {
+  border-radius: 5px;
+  height: 25px;
+  width: 330px;
+}
+
+.h3 {
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
+
+.logoImg {
+  border-radius: 10px;
+  left: 780px;
+  position: absolute;
+  top: 250px;
+  width: 250px;
+}
