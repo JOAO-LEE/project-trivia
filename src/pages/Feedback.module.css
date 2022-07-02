@@ -1,0 +1,38 @@
+.feedbackPage {
+  align-items: center;
+  background-color: #232ec5;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 768px;
+  justify-content: center;
+}
+
+.feedbackBox {
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  color: #050505;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  justify-content: center;
+  padding: 50px;
+  width: 300px;
+}
+
+.btn {
+  margin-right: 10px;
+  width: 100px;
+}
+
+.feedbackHeader {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.feedbackMain {
+  text-align: center;
+}
